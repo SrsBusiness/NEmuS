@@ -1,8 +1,8 @@
 #include "ops.h"
 
-int exec_adc_common(struct nes_state *state, uint8_t operand) {
+int exec_adc_common(struct nes_state *state, uint8_t operand, int pc_increment) {
     /* Increment PC */
-    state->regs.PC += 2; 
+    state->regs.PC += pc_increment; 
 
     /* sum = A + M + C */
     unsigned int sum = state->regs.A + operand + state->regs.SR.C;
@@ -22,5 +22,5 @@ int exec_adc_common(struct nes_state *state, uint8_t operand) {
 }
 
 int exec_adc_imm(struct nes_state *state) {
-    return exec_adc_common(state, state->rom[state->regs.PC + 1]);
+    return exec_adc_common(state, state->rom[state->regs.PC + 1], 2);
 }
