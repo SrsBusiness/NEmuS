@@ -237,5 +237,6 @@ enum NES_OPCODES {
 };
 
 int exec_adc_imm(struct nes_state *state);
+uint16_t address_mode_imm(struct nes_state *state);
 
 #endif

@@ -21,16 +21,15 @@ int exec_adc_common(struct nes_state *state, uint8_t operand, int pc_increment) 
     return 0;
 }
 
-int exec_inc_common(struct nes_state *state, uint16_t operand, int pc_increment){
-	
-	state->regs.PC += pc_increment;
-
+int exec_inc(struct nes_state *state, uint16_t operand, int pc_increment) {
 	/* Increment Memory by One: INC */
+
+	/* Increment PC */
+	state->regs.PC += pc_increment;
 	/* M + 1 -> M */
 	uint16_t address = operand;
 	/* increment value at memory */
 	state->ram[address]++;
-
 	/* set negative flag if bit 7 is set */
 	state->regs.SR.N = ((state->ram[address]) & 0x80) >> 7;
 	/* set zero flag */
@@ -38,6 +37,18 @@ int exec_inc_common(struct nes_state *state, uint16_t operand, int pc_increment)
 	return 0;
 }
 
+int exec_inx(struct nes_state *state) {
+	/* Increment X */
+	state->regs.X++;
+
+	state->regs.PC++;
+	return 0;
+}
+
 int exec_adc_imm(struct nes_state *state) {
     return exec_adc_common(state, state->rom[state->regs.PC + 1], 2);
+}
+
+uint16_t address_mode_imm(struct nes_state *state) {
+	return state->rom[state->regs.PC + 1];
 }
