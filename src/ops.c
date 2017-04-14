@@ -45,6 +45,14 @@ int exec_inx(struct nes_state *state) {
 	return 0;
 }
 
+int exec_iny(struct nes_state *state) {
+	/* Increment Y */
+	state->regs.Y++;
+
+	state->regs.PC++;
+	return 0;
+}
+
 int exec_adc_imm(struct nes_state *state) {
     return exec_adc_common(state, state->rom[state->regs.PC + 1], 2);
 }
