@@ -156,6 +156,46 @@ int exec_tay(struct nes_state *state){
 	return 0;
 }
 
+int exec_tsx(struct nes_state *state){
+	/* Transfer Stack Pointer to X */
+
+	state->regs.X = state->regs.SP;
+	state->regs.SR.N = (state->regs.X & 0x80) >> 7;
+	state->regs.SR.Z = (state->regs.X & 0xff) == 0;
+	state->regs.PC++;
+	return 0;
+}
+
+int exec_txa(struct nes_state *state){
+	/* Transfer X to Accumulator  */
+
+	state->regs.A = state->regs.X;
+	state->regs.SR.N = (state->regs.A & 0x80) >> 7;
+	state->regs.SR.Z = (state->regs.A & 0xff) == 0;
+	state->regs.PC++;
+	return 0;
+}
+
+int exec_txs(struct nes_state *state){
+	/* Transfer X to Stack Pointer */
+
+	state->regs.SP = state->regs.X;
+	state->regs.SR.N = (state->regs.SP & 0x80) >> 7;
+	state->regs.SR.Z = (state->regs.SP & 0xff) == 0;
+	state->regs.PC++;
+	return 0;
+}
+
+int exec_tya(struct nes_state *state){
+	/* Transfer Y to Accumulator  */
+
+	state->regs.A = state->regs.Y;
+	state->regs.SR.N = (state->regs.A & 0x80) >> 7;
+	state->regs.SR.Z = (state->regs.A & 0xff) == 0;
+	state->regs.PC++;
+	return 0;
+}
+
 int exec_adc_imm(struct nes_state *state) {
     return exec_adc_common(state, state->rom[state->regs.PC + 1], 2);
 }
