@@ -1,4 +1,5 @@
 #include "ops.h"
+#include "mem.h"
 
 int exec_adc_common(struct nes_state *state, uint8_t operand, int pc_increment) {
     /* Increment PC */
@@ -81,11 +82,12 @@ int exec_inc(struct nes_state *state, uint16_t operand, int pc_increment) {
 	/* M + 1 -> M */
 	uint16_t address = operand;
 	/* increment value at memory */
-	state->ram[address]++;
+    uint8_t value = mem_read(state, address) + 1;
+    mem_write(state, address, value);
 	/* set negative flag if bit 7 is set */
-	state->regs.SR.N = ((state->ram[address]) & 0x80) >> 7;
+	state->regs.SR.N = (value & 0x80) >> 7;
 	/* set zero flag */
-	state->regs.SR.Z = (state->ram[address]) == 0;
+	state->regs.SR.Z = (value) == 0;
 	return 0;
 }
 

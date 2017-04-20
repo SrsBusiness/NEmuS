@@ -1,6 +1,7 @@
 #ifndef NES_H
 #define NES_H
 
+#include "mapper.h"
 #include <stdint.h>
 
 #define KILOBYTE (1 << 10) /* 2**10 = 1024 */
@@ -12,6 +13,10 @@ struct nes_regs {
     uint8_t A;		//acumulator register
 	uint8_t X;		//index register
 	uint8_t Y;		//index register
+    /*
+     * TODO: switch to explicit mask & shift approach. Bitfield bit layout
+     * not well defined
+     */
 	struct {
         uint8_t N : 1, V : 1, : 1, B : 1, D : 1, I : 1, Z : 1, C : 1;
     } SR;		//processor status		N V _ B D I Z C 	SEE NOTE*
@@ -19,7 +24,8 @@ struct nes_regs {
 	uint16_t PC;	//program counter
 };
 
-/* Not a fan of personally of typedef for struct types. However, there are
+/* 
+ * Not a fan of personally of typedef for struct types. However, there are
  * definitely 2 sides to this battle:
  * https://stackoverflow.com/questions/252780/why-should-we-typedef-a-struct-so-often-in-c
  * https://www.kernel.org/doc/Documentation/process/coding-style.rst
@@ -30,6 +36,11 @@ typedef struct nes_state {
 
     /* Placeholders until we understand how ROM works */
     uint8_t rom[MEGABYTE];
+
+    /* Mapper related stuff */
+    enum MAPPER_TYPE mapper_type;
+    uint8_t (*mapper_read)(struct nes_state *n, uint16_t addr);
+    void (*mapper_write)(struct nes_state *n, uint16_t addr, uint8_t data);
 } Nes; 
 
 /* struct nes_state n = NES_INITIAL_STATE; */
