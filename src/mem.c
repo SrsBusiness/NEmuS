@@ -17,9 +17,9 @@
  */
 uint8_t mem_read(struct nes_state *n, uint16_t addr) {
     switch(addr >> 12) { /* Switch on the most significant nibble */
-        case 0:
+        case 0: case 1:
             return n->ram[addr & RAM_ADDR_MASK];
-        case 2:
+        case 2: case 3:
             /* PPU registers */
             return 0;
         default: /* 0x4000 and above */
@@ -39,10 +39,10 @@ uint8_t mem_read(struct nes_state *n, uint16_t addr) {
 
 void mem_write(struct nes_state *n, uint16_t addr, uint8_t data) {
     switch(addr >> 12) { /* Switch on the most significant nibble */
-        case 0:
+        case 0: case 1:
             n->ram[addr & RAM_ADDR_MASK] = data;
             break;
-        case 2:
+        case 2: case 3:
             /* PPU registers */
             break;
         default: /* 0x4000 and above */
