@@ -11,17 +11,17 @@
 
 struct nes_regs {
     uint8_t A;		//acumulator register
-	uint8_t X;		//index register
-	uint8_t Y;		//index register
+    uint8_t X;		//index register
+    uint8_t Y;		//index register
     /*
      * TODO: switch to explicit mask & shift approach. Bitfield bit layout
      * not well defined
      */
-	struct {
+    struct {
         uint8_t N : 1, V : 1, : 1, B : 1, D : 1, I : 1, Z : 1, C : 1;
     } SR;		//processor status		N V _ B D I Z C 	SEE NOTE*
-	uint8_t SP;		//stack pointer
-	uint16_t PC;	//program counter
+    uint8_t SP;		//stack pointer
+    uint16_t PC;	//program counter
 };
 
 /* 
